@@ -1,4 +1,4 @@
-# Copyright 2019 Google LLC
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,11 +15,12 @@
 apiVersion: constraints.gatekeeper.sh/v1alpha1
 kind: GCPBigQueryDatasetWorldReadableConstraintV1
 metadata:
-  name: require_bq_table_iam
+  name: require_bq_table_iam_multiple_exemption
   annotations:
     # This constraint is not certified by CIS.
     bundles.validator.forsetisecurity.org/cis-v1.1: 5.03
 spec:
   severity: high
-    
-  parameters: {}
+  parameters:
+    exemptions:
+      - "//bigquery.googleapis.com/projects/test-project/datasets/world-readable-allUsers"

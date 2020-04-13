@@ -1,5 +1,5 @@
 #
-# Copyright 2018 Google LLC
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -27,5 +27,18 @@ test_bigquery_iam_violations {
 		"//bigquery.googleapis.com/projects/test-project/datasets/world-readable-both",
 	}
 
-	test_utils.check_test_violations(data.test.fixtures.bigquery_dataset_world_readable.assets, [data.test.fixtures.bigquery_dataset_world_readable.constraints], template_name, expected_resource_names)
+	test_utils.check_test_violations(data.test.fixtures.bigquery_dataset_world_readable.assets, [data.test.fixtures.bigquery_dataset_world_readable.constraints.world_readable_all], template_name, expected_resource_names)
+}
+
+test_bigquery_iam_violations_one_exemption {
+	expected_resource_names := {
+		"//bigquery.googleapis.com/projects/test-project/datasets/world-readable-allAuthenticatedUsers",
+		"//bigquery.googleapis.com/projects/test-project/datasets/world-readable-both",
+	}
+
+	test_utils.check_test_violations(data.test.fixtures.bigquery_dataset_world_readable.assets, [data.test.fixtures.bigquery_dataset_world_readable.constraints.world_readable_one_exemption], template_name, expected_resource_names)
+}
+
+test_bigquery_iam_violations_multiple_exemption {
+	test_utils.check_test_violations_count(data.test.fixtures.bigquery_dataset_world_readable.assets, [data.test.fixtures.bigquery_dataset_world_readable.constraints.world_readable_multiple_exemption], template_name, 0)
 }
